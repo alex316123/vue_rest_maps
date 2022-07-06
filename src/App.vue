@@ -193,14 +193,14 @@ export default {
         return hash;
     
     },
-    ...mapMutations(['centrar']),
+    ...mapMutations(['centrar','Actualizar']),
     handleClick(value) {
         this.centrar(value.index);
     },
     async update(){
       this.carga = true;
       const config = {
-            headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDV0Rlc2Fycm9sbG8iLCJpc3MiOiJDeXJ1cyBXaXJlbGVzcyIsImlhdCI6IjE2NTU5MjA3MzIiLCJuYW1lIjoiVGVtcG9yYWwgRGVzYXJyb2xsbyAiLCJ1c2VyIjoiMjU0MiJ9.5-b7_tOGOLDm13H2_NYU-j1Obr41U36ZrErqLfpCVio` }
+            headers: { Authorization: `Bearer ` }
       };
       try{
           let datos = await axios.get(`http://gm3.cyrus.tech:8081/gm3.rest/api/units/lastposition/?search=`,config);
@@ -208,23 +208,6 @@ export default {
           console.log(dataObj);
           for (let index = 0; index < dataObj.length; index++) {
             const dataRowObj = dataObj[index];
-            this.desserts.push({
-              index: index,
-              unidad: dataRowObj.una, 
-              id: dataRowObj.uco,
-              fecha: dataRowObj.upos.pldt.split('T')[0],
-              hora: dataRowObj.upos.pldt.split('T')[1],
-              estatus: '',
-              encendido:dataRowObj.usta.uacc,
-              motor: dataRowObj.usta.ueng,
-              modelo: dataRowObj.ucar.cmdl,
-              marca: dataRowObj.ucar.cbrd,
-              submarca: dataRowObj.ucar.csbb,
-              color: dataRowObj.ucar.ccol,
-              placas: dataRowObj.ucar.cpla,
-              vin: dataRowObj.ucar.cpla,
-              economico: dataRowObj.ucar.econ
-            });
             const modal = '';
             let positionMarker = modal === 'unitAssignment' ? (typeof dataRowObj.upos != 'undefined' ? dataRowObj.upos.pldt : typeof dataRowObj.lspo != 'undefined' ? dataRowObj.lspo : typeof dataRowObj.lpu != 'undefined' ? dataRowObj.lpu : 'red') : (typeof dataRowObj.upos != 'undefined' ? dataRowObj.upos.pldt : typeof dataRowObj.lspo != 'undefined' ? dataRowObj.lspo : typeof dataRowObj.ppo != 'undefined' ? dataRowObj.ppo : 'red');
             let motor = this.notEmpty(dataRowObj.usta) ? (this.notEmpty(dataRowObj.usta.uacc) ? dataRowObj.usta.uacc.toUpperCase() : (this.notEmpty(dataRowObj.acc) ? dataRowObj.acc.toUpperCase() : null)) : null;
@@ -233,7 +216,7 @@ export default {
             let label = typeof dataRowObj.uco && dataRowObj.uco != '' && dataRowObj.uco != undefined ? dataRowObj.uco.substr(dataRowObj.uco.length - 3) : 'SD';
             
             this.markersUpdate.push({
-              id:dataRowObj.index,
+              id:dataRowObj.uco+dataRowObj.uid,
               position: { lat: dataRowObj.upos.plat, lng: dataRowObj.upos.plon },
               url: "https://apptecnored.com/TEST.php?Label=" + label,
               index: (index*2),
@@ -241,7 +224,7 @@ export default {
             });
             
           }
-          this.updateMarker = true;
+          this.Actualizar();
         }catch(err){
           console.log(err);
         }
@@ -250,7 +233,7 @@ export default {
     async getData(){
       this.carga = true;
         const config = {
-            headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDV0Rlc2Fycm9sbG8iLCJpc3MiOiJDeXJ1cyBXaXJlbGVzcyIsImlhdCI6IjE2NTU5MjA3MzIiLCJuYW1lIjoiVGVtcG9yYWwgRGVzYXJyb2xsbyAiLCJ1c2VyIjoiMjU0MiJ9.5-b7_tOGOLDm13H2_NYU-j1Obr41U36ZrErqLfpCVio` }
+            headers: { Authorization: `Bearer TOKEN` }
         };
         try{
           let datos = await axios.get(`http://gm3.cyrus.tech:8081/gm3.rest/api/units/lastposition/?search=`,config);
@@ -283,7 +266,7 @@ export default {
             let label = typeof dataRowObj.uco && dataRowObj.uco != '' && dataRowObj.uco != undefined ? dataRowObj.uco.substr(dataRowObj.uco.length - 3) : 'SD';
             
             this.markers.push({
-              id:dataRowObj.index,
+              id:dataRowObj.uco+dataRowObj.uid,
               position: { lat: dataRowObj.upos.plat, lng: dataRowObj.upos.plon },
               url: "https://apptecnored.com/TEST.php?Label=" + label,
               index: (index*2),
@@ -291,7 +274,7 @@ export default {
             });
             
           }
-          this.centrar(index);
+          this.centrar(0);
         }catch(err){
           console.log(err);
         }
