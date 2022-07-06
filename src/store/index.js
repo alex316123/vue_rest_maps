@@ -18,7 +18,7 @@ export default new Vuex.Store({
     mapcenter: { lat: 23, lng: 102 }
   },
   getters:{
-    mapcenter: state => state.mapcenter
+    mapcenter: state => state.mapcenter,
   },
   mutations: {
     mostrarLoading(state,payload){
@@ -31,6 +31,9 @@ export default new Vuex.Store({
     },
     centrar(state,index){
       state.mapcenter = state.markers[index].position;
+    },
+    Actualizar(state){
+      state.updateMarker = !state.updateMarker;
     }
   },
   actions: {

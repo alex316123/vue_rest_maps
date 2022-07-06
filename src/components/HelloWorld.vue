@@ -97,7 +97,7 @@ Icon.Default.mergeOptions({
       ...mapMutations(['mostrarLoading','ocultarLoading']),
       async getData(){
         const config = {
-            headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDV0Rlc2Fycm9sbG8iLCJpc3MiOiJDeXJ1cyBXaXJlbGVzcyIsImlhdCI6IjE2NTU5MjA3MzIiLCJuYW1lIjoiVGVtcG9yYWwgRGVzYXJyb2xsbyAiLCJ1c2VyIjoiMjU0MiJ9.5-b7_tOGOLDm13H2_NYU-j1Obr41U36ZrErqLfpCVio` }
+            headers: { Authorization: `Bearer TOKEN` }
         };
         try{
           this.mostrarLoading({titulo:'Cargando',color:'secondary'})

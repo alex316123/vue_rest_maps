@@ -2,6 +2,10 @@
 import {mapState} from "vuex";
 
 export default {
+  data: () => ({
+    marker1: '',
+    marker2: ''
+  }),
   props: {
     google: {
       type: Object,
@@ -21,19 +25,18 @@ export default {
     mapConfig(){
       return this.mapconfig;
     }
-    
   },
   watch: {
-    'updateMarker': function() {
-      if(this.updateMarker){
-        console.log("Actualiza");
-      }
-    }
+    updateMarker(newValue, oldValue) {
+      let objetoresp = this.markersUpdate.filter(element => element.id == this.marker.id);
+      this.marker1.setPosition(objetoresp.position);
+      this.marker2.setPosition(objetoresp.position);
+    },
   },
   mounted() {
     const { Marker } = this.google.maps;
 
-    new Marker({
+    this.marker1 = new Marker({
       position: this.marker.position,
       marker: this.marker,
       map: this.map,
@@ -42,7 +45,7 @@ export default {
         url: require("@/assets/image/"+this.marker.hash+".png"),
       },
     });
-    new Marker({
+    this.marker2 = new Marker({
       position: this.marker.position,
       marker: this.marker,
       zIndex:(this.marker.index+1),
